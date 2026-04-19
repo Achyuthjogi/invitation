@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shree Daksha Academy – Illusions of Connections 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00f5ff;
+    --blue: #0044ff;
+    --gold: #ffd700;
+    --magenta: #ff00cc;
+    --dark: #010a14;
+    --mid: #041428;
+    --glow-cyan: 0 0 15px #00f5ffaa, 0 0 40px #00f5ff44;
+    --glow-gold: 0 0 15px #ffd700aa, 0 0 40px #ffd70044;
+    --glow-mag: 0 0 15px #ff00ccaa, 0 0 40px #ff00cc44;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── CANVAS STARFIELD ── */
+  #stars { position: fixed; inset: 0; z-index: 0; }
+
+  /* ── GRID OVERLAY ── */
+  .grid {
+    position: fixed; inset: 0; z-index: 1;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridPulse 3s ease-in-out infinite;
+  }
+  @keyframes gridPulse {
+    0%,100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── SCAN LINE ── */
+  .scanline {
+    position: fixed; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    z-index: 2;
+    animation: scan 3s linear infinite;
+    box-shadow: var(--glow-cyan);
+  }
+  @keyframes scan {
+    0% { top: -2px; opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { top: 100vh; opacity: 0; }
+  }
+
+  /* ── GLITCH OVERLAY (flash on transition) ── */
+  #glitch {
+    position: fixed; inset: 0; z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(135deg, rgba(0,245,255,0.08), rgba(255,0,204,0.05));
+    mix-blend-mode: screen;
+  }
+  #glitch.flash {
+    animation: glitchFlash 0.4s ease forwards;
+  }
+  @keyframes glitchFlash {
+    0% { opacity: 0; transform: skewX(0deg); }
+    20% { opacity: 1; transform: skewX(-2deg); }
+    40% { opacity: 0.5; transform: skewX(2deg); }
+    60% { opacity: 0.8; transform: skewX(-1deg); }
+    100% { opacity: 0; transform: skewX(0deg); }
+  }
+
+  /* ── SLIDES ── */
+  .slide {
+    position: fixed; inset: 0; z-index: 10;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; }
+
+  /* ══════════════════════════════════
+     SLIDE 1 — ACADEMY INTRO
+  ══════════════════════════════════ */
+  #s1 .logo-ring {
+    width: 140px; height: 140px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--glow-gold), inset 0 0 30px rgba(255,215,0,0.08);
+    animation: rotateBorder 6s linear infinite, popIn 0.6s ease forwards;
+    position: relative;
+  }
+  .logo-ring::before {
+    content: '';
+    position: absolute; inset: -8px;
+    border: 1px solid rgba(0,245,255,0.3);
+    border-radius: 50%;
+    animation: rotateBorder 9s linear infinite reverse;
+  }
+  .logo-ring::after {
+    content: '';
+    position: absolute; inset: -16px;
+    border: 1px dashed rgba(255,0,204,0.2);
+    border-radius: 50%;
+    animation: rotateBorder 14s linear infinite;
+  }
+  @keyframes rotateBorder {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes popIn {
+    from { transform: scale(0) rotate(-180deg); opacity: 0; }
+    to { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .logo-inner {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #0a2040 0%, #010a14 70%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px; font-weight: 900;
+    color: var(--gold);
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.4;
+    padding: 10px;
+    text-shadow: var(--glow-gold);
+  }
+  #s1 .academy-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(16px, 3.5vw, 32px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 24px;
+    text-shadow: var(--glow-cyan);
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  #s1 .tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(9px, 1.8vw, 13px);
+    color: var(--cyan);
+    letter-spacing: 4px;
+    margin-top: 10px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  #s1 .address {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 6px;
+    letter-spacing: 1px;
+    animation: fadeUp 0.5s 0.65s ease both;
+  }
+
+  /* ══════════════════════════════════
+     SLIDE 2 — EVENT TITLE
+  ══════════════════════════════════ */
+  #s2 .sym-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 8px;
+    color: var(--magenta);
+    text-transform: uppercase;
+    animation: fadeUp 0.5s ease both;
+    text-shadow: var(--glow-mag);
+  }
+  #s2 .sym-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(26px, 6.5vw, 68px);
+    font-weight: 900;
+    text-align: center;
+    line-height: 1.05;
+    margin: 16px 0;
+    background: linear-gradient(135deg, #fff 0%, var(--cyan) 45%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 0.5s 0.15s ease both, titleGlow 2s 0.8s ease-in-out infinite;
+  }
+  @keyframes titleGlow {
+    0%,100% { filter: brightness(1); }
+    50% { filter: brightness(1.4) drop-shadow(0 0 18px var(--cyan)); }
+  }
+  #s2 .quote-box {
+    max-width: 620px;
+    border-left: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
+    padding: 16px 28px;
+    margin: 14px 20px 0;
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    font-size: clamp(12px, 1.8vw, 15px);
+    font-style: italic;
+    line-height: 1.6;
+    animation: fadeUp 0.5s 0.3s ease both;
+    background: rgba(0,245,255,0.02);
+  }
+  #s2 .date-venue {
+    margin-top: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(13px, 2.2vw, 18px);
+    color: var(--gold);
+    letter-spacing: 3px;
+    animation: fadeUp 0.5s 0.45s ease both;
+    text-shadow: var(--glow-gold);
+  }
+
+  /* ══════════════════════════════════
+     SLIDE 3 — WELCOME GUESTS
+  ══════════════════════════════════ */
+  #s3 .welcome-header {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 8px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    animation: fadeUp 0.4s ease both;
+  }
+  #s3 .welcome-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 3.5vw, 32px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+  .guest-cards {
+    display: flex; flex-wrap: wrap;
+    gap: 14px; justify-content: center;
+    max-width: 760px; padding: 0 16px;
+  }
+  .guest-card {
+    width: clamp(140px, 30vw, 178px);
+    border: 1px solid rgba(0,245,255,0.2);
+    background: linear-gradient(135deg, rgba(0,68,255,0.12), rgba(0,245,255,0.04));
+    padding: 16px 14px;
+    text-align: center;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
+  }
+  .guest-card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 24px rgba(0,245,255,0.12), inset 0 0 16px rgba(0,245,255,0.04);
+  }
+  .guest-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+  .guest-role {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .guest-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(11px, 1.8vw, 14px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .guest-card .pulse-dot {
+    width: 7px; height: 7px;
+    background: var(--cyan);
+    border-radius: 50%;
+    margin: 8px auto 0;
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulseDot 1.2s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.6); opacity: 0.4; }
+  }
+  #s3 .warm-welcome {
+    margin-top: 22px;
+    font-size: clamp(13px, 2.2vw, 16px);
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 2px;
+    animation: fadeUp 0.5s 1.8s ease both;
+  }
+  #s3 .warm-welcome strong { color: var(--gold); }
+
+  /* ══════════════════════════════════
+     SLIDE 4 — TOPICS / FEATURES
+  ══════════════════════════════════ */
+  #s4 .topics-header {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; letter-spacing: 8px;
+    color: var(--magenta); margin-bottom: 12px;
+    animation: fadeUp 0.4s ease both;
+    text-shadow: var(--glow-mag);
+  }
+  #s4 .topics-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(15px, 2.8vw, 26px);
+    font-weight: 700; color: #fff;
+    letter-spacing: 3px; margin-bottom: 28px;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+  .topic-list { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 540px; padding: 0 20px; }
+  .topic-item {
+    display: flex; align-items: center; gap: 16px;
+    border: 1px solid rgba(0,245,255,0.15);
+    background: rgba(0,245,255,0.02);
+    padding: 14px 18px;
+    opacity: 0; transform: translateX(-30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative; overflow: hidden;
+  }
+  .topic-item::after {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--cyan), var(--magenta));
+    box-shadow: var(--glow-cyan);
+  }
+  .topic-item::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(0,245,255,0.05) 0%, transparent 100%);
+  }
+  .topic-item.show { opacity: 1; transform: translateX(0); }
+  .topic-icon { font-size: 22px; flex-shrink: 0; }
+  .topic-text { font-family: 'Orbitron', sans-serif; font-size: clamp(10px, 1.8vw, 14px); font-weight: 600; color: var(--cyan); letter-spacing: 2px; }
+
+  /* ══════════════════════════════════
+     SLIDE 5 — INVISIBLE JOURNEY
+  ══════════════════════════════════ */
+  #s5 .event2-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; letter-spacing: 8px; color: var(--cyan);
+    animation: fadeUp 0.4s ease both;
+  }
+  #s5 .event2-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 4vw, 42px);
+    font-weight: 900; color: #fff;
+    text-align: center; line-height: 1.1;
+    margin: 14px 0 6px;
+    text-shadow: 0 0 24px rgba(0,245,255,0.5);
+    animation: fadeUp 0.4s 0.12s ease both;
+  }
+  #s5 .event2-sub {
+    font-size: clamp(13px, 2.2vw, 18px);
+    color: var(--gold);
+    letter-spacing: 2px; margin-bottom: 24px;
+    animation: fadeUp 0.4s 0.24s ease both;
+    text-shadow: var(--glow-gold);
+  }
+  .network-viz {
+    position: relative; width: 240px; height: 240px;
+    animation: fadeUp 0.5s 0.36s ease both;
+    flex-shrink: 0;
+  }
+  .network-center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,245,255,0.35), transparent);
+    border: 2px solid var(--cyan);
+    box-shadow: var(--glow-cyan);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    animation: centerPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes centerPulse {
+    0%,100% { transform: translate(-50%,-50%) scale(1); box-shadow: var(--glow-cyan); }
+    50% { transform: translate(-50%,-50%) scale(1.12); box-shadow: 0 0 36px #00f5ffcc; }
+  }
+  .orbit-node {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,245,255,0.45);
+    background: rgba(0,68,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 12px rgba(0,245,255,0.18);
+  }
+  .orbit-line {
+    position: absolute; top: 50%; left: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    transform-origin: left center;
+    opacity: 0.4;
+    animation: linePulse 1.8s ease-in-out infinite;
+  }
+  @keyframes linePulse {
+    0%,100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+  }
+  #s5 .venue-info {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(11px, 1.8vw, 15px);
+    color: var(--gold); letter-spacing: 3px;
+    margin-top: 20px;
+    animation: fadeUp 0.4s 0.5s ease both;
+  }
+  #s5 .dept {
+    font-size: 11px; letter-spacing: 4px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 5px;
+    animation: fadeUp 0.4s 0.6s ease both;
+  }
+
+  /* ══════════════════════════════════
+     SLIDE 6 — CLOSING
+  ══════════════════════════════════ */
+  #s6 .closing-ring {
+    width: 180px; height: 180px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--glow-cyan), inset 0 0 36px rgba(0,245,255,0.08);
+    animation: closingPulse 1.8s ease-in-out infinite;
+    position: relative;
+  }
+  .closing-ring::before {
+    content: '';
+    position: absolute; inset: -12px;
+    border: 1px solid rgba(255,215,0,0.25);
+    border-radius: 50%;
+    animation: rotateBorder 8s linear infinite;
+  }
+  .closing-ring::after {
+    content: '';
+    position: absolute; inset: -24px;
+    border: 1px dashed rgba(255,0,204,0.2);
+    border-radius: 50%;
+    animation: rotateBorder 12s linear infinite reverse;
+  }
+  @keyframes closingPulse {
+    0%,100% { box-shadow: var(--glow-cyan), inset 0 0 36px rgba(0,245,255,0.08); }
+    50% { box-shadow: 0 0 50px #00f5ffbb, 0 0 80px #00f5ff44, inset 0 0 50px rgba(0,245,255,0.18); }
+  }
+  .closing-inner {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 4.5vw, 34px);
+    font-weight: 900;
+    color: var(--gold);
+    text-align: center;
+    text-shadow: var(--glow-gold);
+    line-height: 1.2;
+    padding: 0 16px;
+  }
+  #s6 .closing-tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(10px, 1.8vw, 14px);
+    color: var(--cyan); letter-spacing: 4px;
+    margin-top: 24px;
+    text-align: center; padding: 0 20px;
+    animation: blink 1.6s step-start infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  #s6 .closing-bottom {
+    margin-top: 16px; font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 2px;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+
+  /* ── SHARED ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed; bottom: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan), var(--magenta), var(--gold));
+    box-shadow: var(--glow-cyan);
+    z-index: 100;
+    transition: width 0.3s ease;
+  }
+
+  /* ── SLIDE COUNTER ── */
+  #counter {
+    position: fixed; bottom: 16px; right: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: rgba(0,245,255,0.45);
+    z-index: 100;
+  }
+
+  /* ── CORNER DECORATIONS ── */
+  .corner {
+    position: fixed; z-index: 5;
+    width: 36px; height: 36px;
+    opacity: 0.35;
+  }
+  .corner-tl { top: 14px; left: 14px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .corner-tr { top: 14px; right: 14px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+  .corner-bl { bottom: 18px; left: 14px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .corner-br { bottom: 18px; right: 14px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+  /* ── PLAY/PAUSE BUTTON ── */
+  #playBtn {
+    position: fixed; bottom: 12px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: rgba(0,245,255,0.08);
+    border: 1px solid rgba(0,245,255,0.25);
+    color: var(--cyan);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    padding: 5px 18px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  #playBtn:hover { background: rgba(0,245,255,0.18); box-shadow: var(--glow-cyan); }
+
+  /* ── ENERGY PARTICLES ── */
+  .particle {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 3;
+    animation: floatParticle linear infinite;
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-20px) scale(1); opacity: 0; }
+  }
+
+  /* ── DATA STREAM LINES ── */
+  .datastream {
+    position: fixed; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(180deg, transparent 0%, var(--cyan) 50%, transparent 100%);
+    opacity: 0;
+    z-index: 2;
+    animation: streamFall linear infinite;
+  }
+  @keyframes streamFall {
+    0% { transform: translateY(-100%); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="grid"></div>
+<div class="scanline"></div>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+<div id="glitch"></div>
+<div id="progress"></div>
+<div id="counter">01 / 06</div>
+<button id="playBtn">⏸ PAUSE</button>
+
+<!-- ══ SLIDE 1: Academy Intro ══ -->
+<div class="slide active" id="s1">
+  <div class="logo-ring">
+    <div class="logo-inner">SHREE<br>DAKSHA<br>ACADEMY</div>
+  </div>
+  <div class="academy-name">Shree Daksha Academy</div>
+  <div class="tagline">////</div>
+  <div class="address">No. 596, Andrahalli Main Road, Bengaluru-91</div>
+</div>
+
+<!-- ══ SLIDE 2: Event Title ══ -->
+<div class="slide" id="s2">
+  <div class="sym-label">// Technical Symposium 2026 //</div>
+  <div class="sym-title">Illusions of<br>Connections</div>
+  <div class="quote-box">
+    "A journey through the digital landscape — where we explore technology's profound impact on human connections, bridging theory with innovation."
+  </div>
+  <div class="date-venue">April 23rd &amp; 24th, 2026 · Seminar Hall</div>
+</div>
+
+<!-- ══ SLIDE 3: Welcome Guests ══ -->
+<div class="slide" id="s3">
+  <div class="welcome-header">// HONORABLE GUESTS //</div>
+  <div class="welcome-title">We Welcome</div>
+  <div class="guest-cards">
+    <div class="guest-card" data-delay="0">
+      <div class="guest-role">Honorable Secretary</div>
+      <div class="guest-name">Akshay Sir</div>
+      <div class="pulse-dot"></div>
+    </div>
+    <div class="guest-card" data-delay="1">
+      <div class="guest-role">Honorable Principal</div>
+      <div class="guest-name">Dilip Sir</div>
+      <div class="pulse-dot"></div>
+    </div>
+    <div class="guest-card" data-delay="2">
+      <div class="guest-role">Academic Director</div>
+      <div class="guest-name">Chetana Mam</div>
+      <div class="pulse-dot"></div>
+    </div>
+    <div class="guest-card" data-delay="3">
+      <div class="guest-role">Head of Department</div>
+      <div class="guest-name">Narasimha<br>Reddy Sir</div>
+      <div class="pulse-dot"></div>
+    </div>
+  </div>
+  <div class="warm-welcome">A Warm Welcome to Our <strong>Lecturers</strong>, <strong>Seniors</strong> &amp; <strong>Juniors</strong></div>
+</div>
+
+<!-- ══ SLIDE 4: Topics ══ -->
+<div class="slide" id="s4">
+  <div class="topics-header">// PROGRAM HIGHLIGHTS //</div>
+  <div class="topics-title">What Awaits You</div>
+  <div class="topic-list">
+    <div class="topic-item" data-delay="0">
+      <div class="topic-icon">🎤</div>
+      <div class="topic-text">Expert Presentations</div>
+    </div>
+    <div class="topic-item" data-delay="1">
+      <div class="topic-icon">🧩</div>
+      <div class="topic-text">Real-World Case Challenges</div>
+    </div>
+    <div class="topic-item" data-delay="2">
+      <div class="topic-icon">🤖</div>
+      <div class="topic-text">AI Chatbot Generation</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 5: The Invisible Journey ══ -->
+<div class="slide" id="s5">
+  <div class="event2-label">// FEATURED SESSION //</div>
+  <div class="event2-title">The Invisible Journey</div>
+  <div class="event2-sub">How Our Phone Connects the World</div>
+  <div class="network-viz">
+    <div class="orbit-line" style="width:80px; transform:rotate(0deg) translateX(30px);"></div>
+    <div class="orbit-line" style="width:80px; transform:rotate(72deg) translateX(30px);"></div>
+    <div class="orbit-line" style="width:80px; transform:rotate(144deg) translateX(30px);"></div>
+    <div class="orbit-line" style="width:80px; transform:rotate(216deg) translateX(30px);"></div>
+    <div class="orbit-line" style="width:80px; transform:rotate(288deg) translateX(30px);"></div>
+    <div class="orbit-node" style="top:14px; left:50%; transform:translateX(-50%)">🛰️</div>
+    <div class="orbit-node" style="top:50%; right:4px; transform:translateY(-50%)">☁️</div>
+    <div class="orbit-node" style="bottom:24px; right:44px;">🌐</div>
+    <div class="orbit-node" style="bottom:24px; left:44px;">📡</div>
+    <div class="orbit-node" style="top:50%; left:4px; transform:translateY(-50%)">🖥️</div>
+    <div class="network-center">📱</div>
+  </div>
+  <div class="venue-info">Venue: Seminar Hall</div>
+  <div class="dept">Department of Computer Science</div>
+</div>
+
+<!-- ══ SLIDE 6: Closing ══ -->
+<div class="slide" id="s6">
+  <div class="closing-ring">
+    <div class="closing-inner">See<br>You<br>There!</div>
+  </div>
+  <div class="closing-tagline">// THANK YOU FOR BEING PART OF OUR VISION //</div>
+  <div class="closing-bottom">Shree Daksha Academy · Technical Symposium 2026</div>
+</div>
+
+<script>
+// ── STARFIELD ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  stars = Array.from({length: 180}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.4 + 0.2,
+    speed: Math.random() * 0.4 + 0.08,
+    opacity: Math.random()
+  }));
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.opacity += (Math.random() - 0.5) * 0.06;
+    s.opacity = Math.max(0.05, Math.min(1, s.opacity));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(180,220,255,${s.opacity})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+// ── DATA STREAMS ──
+function spawnStream() {
+  const s = document.createElement('div');
+  s.className = 'datastream';
+  s.style.cssText = `
+    left:${Math.random()*100}vw;
+    animation-duration:${Math.random()*4+3}s;
+    animation-delay:${Math.random()*2}s;
+    opacity:0;
+  `;
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 8000);
+}
+setInterval(spawnStream, 400);
+
+// ── PARTICLES ──
+function spawnParticle() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  const colors = ['#00f5ff', '#ffd700', '#ff00cc'];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    background:${color};
+    left:${Math.random()*100}vw;
+    animation-duration:${Math.random()*6+5}s;
+    animation-delay:${Math.random()*3}s;
+    box-shadow: 0 0 5px ${color};
+  `;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 11000);
+}
+setInterval(spawnParticle, 500);
+
+// ── GLITCH EFFECT ──
+function triggerGlitch() {
+  const g = document.getElementById('glitch');
+  g.classList.remove('flash');
+  void g.offsetWidth; // reflow
+  g.classList.add('flash');
+}
+
+// ── SLIDE ENGINE ──
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+// Shortened durations: was [4000, 5000, 7000, 5000, 5000, 5000] = 31s
+// Now: [2500, 3500, 5000, 3500, 3500, 3500] = ~21s total
+const durations = [2500, 3500, 5000, 3500, 3500, 3500];
+let timer = null;
+let paused = false;
+
+function showSlide(idx) {
+  slides.forEach(s => s.classList.remove('active'));
+  slides[idx].classList.add('active');
+  document.getElementById('counter').textContent =
+    String(idx+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  const pct = ((idx+1)/slides.length*100);
+  document.getElementById('progress').style.width = pct + '%';
+
+  if (idx === 2) triggerGuests();
+  if (idx === 3) triggerTopics();
+}
+
+function triggerGuests() {
+  const cards = document.querySelectorAll('#s3 .guest-card');
+  cards.forEach(c => c.classList.remove('show'));
+  cards.forEach((c, i) => {
+    setTimeout(() => c.classList.add('show'), 200 + i * 450);
+  });
+}
+
+function triggerTopics() {
+  const items = document.querySelectorAll('#s4 .topic-item');
+  items.forEach(t => t.classList.remove('show'));
+  items.forEach((t, i) => {
+    setTimeout(() => t.classList.add('show'), 200 + i * 380);
+  });
+}
+
+function nextSlide() {
+  triggerGlitch();
+  setTimeout(() => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+    scheduleNext();
+  }, 150);
+}
+
+function scheduleNext() {
+  clearTimeout(timer);
+  if (!paused) timer = setTimeout(nextSlide, durations[current]);
+}
+
+function advanceLoop() {
+  showSlide(current);
+  scheduleNext();
+}
+
+advanceLoop();
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  paused = !paused;
+  document.getElementById('playBtn').textContent = paused ? '▶ PLAY' : '⏸ PAUSE';
+  if (!paused) scheduleNext();
+  else clearTimeout(timer);
+});
+</script>
+</body>
+</html>
